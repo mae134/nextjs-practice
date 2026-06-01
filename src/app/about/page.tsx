@@ -9,5 +9,5 @@ export default function About() {
         Next.jsのルーティングを学んでいます。
       </p>
     </main>
-  );
+  )
 }
