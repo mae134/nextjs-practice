@@ -1,11 +1,4 @@
 import Link from "next/link"
-import { getProduct } from "@/data/products"
-
-const products = [
-  { id: "1", name: "りんご", price: 120 },
-  { id: "2", name: "みかん", price: 100 },
-  { id: "3", name: "バナナ", price: 150 },
-]
 
 export default async function ProductPage({
   params,
@@ -14,8 +7,11 @@ export default async function ProductPage({
 }) {
   const { id } = await params
 
-  const product = await getProduct(id)
-  if (!product) {
+  const response = await fetch(
+    `http://localhost:3000/api/products/${id}`
+  )
+
+  if (!response.ok) {
     return (
       <main className="p-8">
         <h1 className="text-3xl font-bold">商品が見つかりません</h1>
@@ -23,6 +19,8 @@ export default async function ProductPage({
       </main>
     )
   }
+
+  const product = await response.json()
 
   return (
     <main className="p-8">
