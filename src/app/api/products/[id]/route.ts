@@ -1,4 +1,4 @@
-import { getProduct } from "@/data/products";
+import { getProduct, Product, updateProduct, deleteProduct } from "@/data/products";
 
 
 export async function GET(
@@ -35,10 +35,29 @@ export async function PUT(
 
   const body = await request.json()
 
+  const updatedProduct: Product = {
+    id: id,
+    name: body.name,
+    price: body.price,
+  }
+
+  const product = await updateProduct(id, updatedProduct)
+
+  if (!product) {
+    return Response.json(
+      {
+        message: "商品が見つかりません",
+      },
+      {
+        status: 404,
+      }
+    )
+  }
+
   return Response.json({
     message: "商品を更新しました",
     id,
-    product: body,
+    product: product,
   })
 }
 
@@ -49,6 +68,19 @@ export async function DELETE(
   }
 ) {
   const { id } = await params
+
+  const deletedProduct = await deleteProduct(id)
+
+  if (!deletedProduct) {
+    return Response.json(
+      {
+        message: "商品が見つかりません",
+      },
+      {
+        status: 404,
+      }
+    );
+  }
 
   return Response.json({
     message: "商品を削除しました",
