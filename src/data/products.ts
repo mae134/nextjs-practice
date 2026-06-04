@@ -5,6 +5,11 @@ export type Product = {
   price: number,
 }
 
+export type ProductInput = {
+  name: string
+  price: number
+}
+
 export const products = [
   { id: "1", name: "りんご", price: 120 },
   { id: "2", name: "みかん", price: 100 },
@@ -41,3 +46,15 @@ export async function deleteProduct(id: string) {
 
   return deletedProduct
 } 
+
+export async function createProduct(input: ProductInput) {
+  const product: Product = {
+    id: String(products.length + 1),
+    name: input.name,
+    price: input.price,
+  }
+
+  products.push(product)
+
+  return product
+}
