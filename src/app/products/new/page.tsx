@@ -1,4 +1,5 @@
 import { createProduct } from "@/data/products"
+import { redirect } from "next/navigation"
 
 async function createProductAction(formData: FormData) {
   "use server"
@@ -10,6 +11,8 @@ async function createProductAction(formData: FormData) {
     name,
     price,
   })
+
+  redirect("/products")
 }
 
 export default function NewProductPage() {
