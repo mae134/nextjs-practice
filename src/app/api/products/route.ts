@@ -1,6 +1,8 @@
 import { createProduct, products} from "@/data/products";
 
 export async function GET() {
+  console.log("api products", products)
+  
   return Response.json(products)
 }
 

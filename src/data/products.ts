@@ -56,5 +56,7 @@ export async function createProduct(input: ProductInput) {
 
   products.push(product)
 
+  console.log("products", products)
+
   return product
 }

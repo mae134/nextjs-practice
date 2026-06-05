@@ -1,12 +1,15 @@
 import Link from "next/link";
+import type { Product } from "@/data/products"
 
-const products = [
-  { id: "1", name: "りんご", price: 120 },
-  { id: "2", name: "みかん", price: 100 },
-  { id: "3", name: "バナナ", price: 150 },
-];
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+
+  const response = await fetch(
+    "http://localhost:3000/api/products"
+  )
+
+  const products: Product[] = await response.json()
+
   return (
     <main className="p-8">
       <h1 className="text-3xl font-bold">商品一覧</h1>
