@@ -1,5 +1,6 @@
 import { createProduct } from "@/data/products"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 
 async function createProductAction(formData: FormData) {
   "use server"
@@ -12,6 +13,10 @@ async function createProductAction(formData: FormData) {
     price,
   })
 
+  // /productsのキャッシュを捨てて次に表示するとき再取得
+  revalidatePath("/products")
+
+  // 商品一覧ページにリダイレクト
   redirect("/products")
 }
 
