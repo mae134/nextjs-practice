@@ -9,32 +9,41 @@ export default function ClientFormPage() {
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
-    setLoading(true)
+    try {
+      setLoading(true)
 
-    // 実際には待機時間があるので、試しに3秒待つ
-    await new Promise((resolve) =>
-      setTimeout(resolve, 3000)
-    )
+      // 実際には待機時間があるので、試しに3秒待つ
+      await new Promise((resolve) =>
+        setTimeout(resolve, 3000)
+      )
 
-    const response = await fetch("/api/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        price: Number(price),
-      }),
-    })
+      const response = await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          price: Number(price),
+        }),
+      })
 
-    const data = await response.json()
+      if (!response.ok) {
+        throw new Error("商品の作成に失敗しました")
+      }
 
-    setName("")
-    setPrice("")
-    setMessage(data.message)
-    setLoading(false)
+      const data = await response.json()
 
-    console.log(data)
+      setName("")
+      setPrice("")
+      setMessage(data.message)
+
+    } catch (error) {
+      console.error(error)
+      setMessage("商品の作成に失敗しました")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
