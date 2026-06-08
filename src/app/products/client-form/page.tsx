@@ -6,8 +6,16 @@ export default function ClientFormPage() {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
   const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
+    setLoading(true)
+
+    // 実際には待機時間があるので、試しに3秒待つ
+    await new Promise((resolve) =>
+      setTimeout(resolve, 3000)
+    )
+
     const response = await fetch("/api/products", {
       method: "POST",
       headers: {
@@ -24,6 +32,7 @@ export default function ClientFormPage() {
     setName("")
     setPrice("")
     setMessage(data.message)
+    setLoading(false)
 
     console.log(data)
   }
@@ -32,9 +41,10 @@ export default function ClientFormPage() {
     <main className="p-8">
       <button
         onClick={handleSubmit}
+        disabled={loading}
         className="border px-4 py-2"
       >
-        テスト
+        {loading ? "作成中..." : "作成"}
       </button>
 
       <h1 className="text-3xl font-bold">Client Component Form</h1>
