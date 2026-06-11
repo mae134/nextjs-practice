@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase"
+import { ProductList } from "./ProductList"
 
 export default async function SupabaseProductsPage() {
 
@@ -20,16 +21,7 @@ export default async function SupabaseProductsPage() {
     <main className="p-8">
       <h1 className="text-3xl font-bold">Supabase Products</h1>
 
-      <ul className="mt-4 space-y-2">
-        {data?.map((product) => (
-          <li
-            key={product.id}
-            className="border p-2"
-          >
-            {product.name} - {product.price}円
-          </li>
-        ))}
-      </ul>
+      <ProductList products={data ?? []}/>
     </main>
   )
 }
