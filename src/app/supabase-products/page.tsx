@@ -20,9 +20,16 @@ export default async function SupabaseProductsPage() {
     <main className="p-8">
       <h1 className="text-3xl font-bold">Supabase Products</h1>
 
-      <pre className="mt-4">
-        {JSON.stringify(data, null, 2)}
-      </pre>
+      <ul className="mt-4 space-y-2">
+        {data?.map((product) => (
+          <li
+            key={product.id}
+            className="border p-2"
+          >
+            {product.name} - {product.price}円
+          </li>
+        ))}
+      </ul>
     </main>
   )
 }
