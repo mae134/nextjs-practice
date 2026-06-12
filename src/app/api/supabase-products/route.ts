@@ -29,3 +29,18 @@ export async function POST(request: Request) {
 
   return Response.json(data)
 }
+
+export async function DELETE(request: Request) {
+  const body = await request.json()
+
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", body.id)
+
+  if(error){
+    return Response.json({message: error.message}, {status: 500})
+  }
+
+  return Response.json({message: "deleted"})
+}

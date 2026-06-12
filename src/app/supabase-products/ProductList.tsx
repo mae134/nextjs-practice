@@ -18,16 +18,23 @@ export function ProductList({
   const router = useRouter()
 
   const handleDelete = async (id: number) => {
-    const { error } = await supabase
-      .from("products")
-      .delete()
-      .eq("id", id)
+    const response = await fetch("/api/supabase-products", 
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({id}),
+      }
+    )
 
-    if (!error) {
-      router.refresh()
+    if(!response.ok){
+      const error = await response.json()
+      console.log(error.message)
+      return
     }
 
-    console.log(error)
+    router.refresh()
   }
 
   const handleUpdate = async (id: number) => {
