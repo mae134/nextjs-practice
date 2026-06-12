@@ -1,14 +1,15 @@
-import { supabase } from "@/lib/supabase"
 import { ProductList } from "./ProductList"
 
 export default async function SupabaseProductsPage() {
 
   // 一覧取得
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
+  const response = await fetch("http://localhost:3000/api/supabase-products", {
+    cache: "no-store"
+  })
 
-  if (error) {
+  if (!response.ok) {
+    const error = await response.json()
+
     return (
       <main className="p-8">
         <h1 className="text-3xl font-bold">取得失敗</h1>
@@ -17,11 +18,15 @@ export default async function SupabaseProductsPage() {
     )
   }
 
+  const data = await response.json()
+
+  console.log(data)
+
   return (
     <main className="p-8">
       <h1 className="text-3xl font-bold">Supabase Products</h1>
 
-      <ProductList products={data ?? []}/>
+      <ProductList products={data ?? []} />
     </main>
   )
 }
