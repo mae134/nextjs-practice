@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { createProduct } from "@/lib/products"
 
 export default function InsertProductPage() {
   const [name, setName] = useState("")
@@ -11,25 +12,13 @@ export default function InsertProductPage() {
       return
     }
 
-    const response = await fetch("/api/supabase-products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        price: Number(price),
-      }),
-    })
-
-    if (!response.ok) {
-      const error = await response.json()
-      console.log(error.message)
-      return
-    }
-
-    const data = await response.json()
+  try {
+    const data = await createProduct(name, Number(price))
+    
     console.log(data)
+  } catch (error) {
+    console.error("Error inserting product:", error)
+  }
 
     setName("")
     setPrice("")

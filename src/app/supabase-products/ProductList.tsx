@@ -1,7 +1,7 @@
 "use client"
 
-import { supabase } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
+import { deleteProduct, updateProduct } from "@/lib/products"
 
 type Product = {
   id: number
@@ -18,43 +18,25 @@ export function ProductList({
   const router = useRouter()
 
   const handleDelete = async (id: number) => {
-    const response = await fetch("/api/supabase-products", 
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({id}),
-      }
-    )
+    try {
+      await deleteProduct(id)
 
-    if(!response.ok){
-      const error = await response.json()
-      console.log(error.message)
-      return
+      router.refresh()
+    } catch (error) {
+      console.error(error)
     }
-
-    router.refresh()
   }
 
   const handleUpdate = async (id: number) => {
-    const response = await fetch("/api/supabase-products",
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({id, price: 9999}),
-      }
-    )
 
-    if(!response.ok){
-      const error = await response.json()
-      console.log(error.message)
-      return
+    try {
+      await updateProduct(id, 9999)
+
+      router.refresh()
     }
-
-    router.refresh()
+    catch (error) { 
+      console.error(error)
+    }
   }
 
   return (
