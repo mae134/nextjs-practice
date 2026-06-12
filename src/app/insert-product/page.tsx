@@ -1,35 +1,38 @@
 "use client"
 
 import { useState } from "react"
-import { supabase } from "@/lib/supabase"
 
 export default function InsertProductPage() {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
 
   const handleInsert = async () => {
-
     if (!name || !price) {
       return
     }
-    
-    const { data, error } = await supabase
-      .from("products")
-      .insert([
-        {
-          name,
-          price: Number(price),
-        },
-      ])
-      .select()
 
-    if (!error) {
-      setName("")
-      setPrice("")
+    const response = await fetch("/api/supabase-products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        price: Number(price),
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      console.log(error.message)
+      return
     }
 
+    const data = await response.json()
     console.log(data)
-    console.log(error)
+
+    setName("")
+    setPrice("")
   }
 
   return (
