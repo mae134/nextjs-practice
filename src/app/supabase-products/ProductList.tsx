@@ -26,7 +26,22 @@ export function ProductList({
     if (!error) {
       router.refresh()
     }
-    
+
+    console.log(error)
+  }
+
+  const handleUpdate = async (id: number) => {
+    const { error } = await supabase
+      .from("products")
+      .update({
+        price: 9999,
+      })
+      .eq("id", id)
+
+    if (!error) {
+      router.refresh()
+    }
+
     console.log(error)
   }
 
@@ -44,6 +59,12 @@ export function ProductList({
             className="ml-4 border px-2 py-1"
           >
             削除
+          </button>
+          <button
+            onClick={() => handleUpdate(product.id)}
+            className="ml-4 border px-2 py-1"
+          >
+            価格更新
           </button>
         </li>
       ))}
