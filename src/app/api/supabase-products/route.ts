@@ -44,3 +44,20 @@ export async function DELETE(request: Request) {
 
   return Response.json({message: "deleted"})
 }
+
+export async function PUT(request: Request) {
+  const body = await request.json()
+
+  const { error } = await supabase
+    .from("products")
+    .update({
+      price: body.price,
+    })
+    .eq("id", body.id)
+
+  if(error){
+    return Response.json({message: error.message}, {status: 500})
+  }
+
+  return Response.json({message: "updated"})
+}

@@ -38,18 +38,23 @@ export function ProductList({
   }
 
   const handleUpdate = async (id: number) => {
-    const { error } = await supabase
-      .from("products")
-      .update({
-        price: 9999,
-      })
-      .eq("id", id)
+    const response = await fetch("/api/supabase-products",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({id, price: 9999}),
+      }
+    )
 
-    if (!error) {
-      router.refresh()
+    if(!response.ok){
+      const error = await response.json()
+      console.log(error.message)
+      return
     }
 
-    console.log(error)
+    router.refresh()
   }
 
   return (
