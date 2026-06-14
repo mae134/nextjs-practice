@@ -1,5 +1,5 @@
-import { getProduct, Product, updateProduct, deleteProduct } from "@/data/products";
-
+import { getProduct, updateProduct, deleteProduct } from "@/data/mockProducts";
+import type { Product } from "@/types/product"
 
 export async function GET(
   request: Request,

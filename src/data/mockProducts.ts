@@ -1,14 +1,4 @@
-
-export type Product = {
-  id: string,
-  name: string,
-  price: number,
-}
-
-export type ProductInput = {
-  name: string
-  price: number
-}
+import type { Product, ProductInput } from "@/types/product"
 
 export const products = [
   { id: "1", name: "りんご", price: 120 },
@@ -21,7 +11,7 @@ export async function getProduct(id: string) {
 }
 
 export async function updateProduct(id: string, updatedProduct: Product) {
-  let product = await getProduct(id)
+  const product = await getProduct(id)
 
   if(!product) {
     return null

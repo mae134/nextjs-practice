@@ -1,4 +1,4 @@
-import { createProduct, products} from "@/data/products";
+import { createProduct, products} from "@/data/mockProducts";
 
 export async function GET() {
   console.log("api products", products)

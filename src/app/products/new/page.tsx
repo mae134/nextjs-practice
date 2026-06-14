@@ -1,4 +1,4 @@
-import { createProduct } from "@/data/products"
+import { createProduct } from "@/data/mockProducts"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 
