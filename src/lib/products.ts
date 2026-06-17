@@ -60,7 +60,9 @@ export async function createProduct(name: string, price: number) {
 }
 
 export async function getProducts() {
-  const response = await fetch("/api/supabase-products", {
+
+  // TODO:urlを後々環境変数化する
+  const response = await fetch("http://localhost:3000/api/supabase-products", {
     cache: "no-store"
   })
 
