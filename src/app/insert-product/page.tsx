@@ -12,16 +12,16 @@ export default function InsertProductPage() {
       return
     }
 
-  try {
-    const data = await createProduct(name, Number(price))
-    
-    console.log(data)
-  } catch (error) {
-    console.error("Error inserting product:", error)
-  }
+    try {
+      const data = await createProduct(name, Number(price))
 
-    setName("")
-    setPrice("")
+      console.log(data)
+
+      setName("")
+      setPrice("")
+    } catch (error) {
+      console.error("Error inserting product:", error)
+    }
   }
 
   return (

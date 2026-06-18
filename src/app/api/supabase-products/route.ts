@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase"
+import { productSchema } from "@/schemas/product"
 
 export async function GET() {
   const { data, error } = await supabase
@@ -14,6 +15,23 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json()
+
+  const result = productSchema.safeParse(body)
+
+  console.log("result", result)
+
+  if (!result.success) {
+    return Response.json(
+      {
+        message:
+          result.error.issues[0]?.message ??
+          "入力が正しくありません",
+      },
+      {
+        status: 400,
+      }
+    )
+  }
 
   const { data, error } =
     await supabase
@@ -38,11 +56,11 @@ export async function DELETE(request: Request) {
     .delete()
     .eq("id", body.id)
 
-  if(error){
-    return Response.json({message: error.message}, {status: 500})
+  if (error) {
+    return Response.json({ message: error.message }, { status: 500 })
   }
 
-  return Response.json({message: "deleted"})
+  return Response.json({ message: "deleted" })
 }
 
 export async function PUT(request: Request) {
@@ -55,9 +73,9 @@ export async function PUT(request: Request) {
     })
     .eq("id", body.id)
 
-  if(error){
-    return Response.json({message: error.message}, {status: 500})
+  if (error) {
+    return Response.json({ message: error.message }, { status: 500 })
   }
 
-  return Response.json({message: "updated"})
+  return Response.json({ message: "updated" })
 }
