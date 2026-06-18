@@ -6,6 +6,7 @@ import { createProduct } from "@/lib/products"
 export default function InsertProductPage() {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleInsert = async () => {
     if (!name || !price) {
@@ -19,8 +20,11 @@ export default function InsertProductPage() {
 
       setName("")
       setPrice("")
+      setErrorMessage("")
     } catch (error) {
-      console.error("Error inserting product:", error)
+      if (error instanceof Error) {
+        setErrorMessage(error.message)
+      }
     }
   }
 
@@ -55,6 +59,14 @@ export default function InsertProductPage() {
         >
           商品追加
         </button>
+        
+        {
+          errorMessage && (
+            <p className="text-red-500">
+              {errorMessage}
+            </p>
+          )
+        }
       </div>
     </main>
   )
