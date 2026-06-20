@@ -4,7 +4,12 @@ import { supabase } from "@/lib/supabase"
 import { productSchema } from "@/schemas/product"
 import { revalidatePath } from "next/cache"
 
-export async function createProductAction(formData: FormData) {
+type ActionState = {
+  success: boolean
+  message: string
+}
+
+export async function createProductAction(prevState: ActionState, formData: FormData): Promise<ActionState> {
   const body = {
     name: formData.get("name"),
     price: Number(formData.get("price")),
@@ -13,8 +18,10 @@ export async function createProductAction(formData: FormData) {
   const result = productSchema.safeParse(body)
 
   if (!result.success) {
-    console.log(result.error.issues[0]?.message)
-    return
+    return {
+      success: false,
+      message: result.error.issues[0]?.message ?? "入力エラー",
+    }
   }
 
   const { error } = await supabase
@@ -27,9 +34,16 @@ export async function createProductAction(formData: FormData) {
     ])
 
   if (error) {
-    console.log(error.message)
-    return
+    return {
+      success: false,
+      message: error.message,
+    }
   }
 
   revalidatePath("/supabase-products")
+
+  return {
+    success: true,
+    message: "商品を追加しました",
+  }
 }

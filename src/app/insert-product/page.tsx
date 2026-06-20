@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useActionState, useState } from "react"
 import { createProduct } from "@/lib/products"
 import { createProductAction } from "./actions"
 
@@ -28,6 +28,14 @@ export default function InsertProductPage() {
       }
     }
   }
+
+  const [state, formAction] = useActionState(
+    createProductAction,
+    {
+      success: false,
+      message: "",
+    }
+  )
 
   return (
     <main className="p-8">
@@ -63,7 +71,7 @@ export default function InsertProductPage() {
         </button>
 
         {/* serveraction */}
-        <form action={createProductAction}>
+        <form action={formAction}>
           <input
             name="name"
             placeholder="商品名"
@@ -83,7 +91,9 @@ export default function InsertProductPage() {
             商品追加
           </button>
         </form>
-        
+
+        <p>{state.message}</p>
+
         {
           errorMessage && (
             <p className="text-red-500">
