@@ -3,6 +3,7 @@
 import { supabase } from "@/lib/supabase"
 import { productSchema } from "@/schemas/product"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 type ActionState = {
   success: boolean
@@ -42,8 +43,5 @@ export async function createProductAction(prevState: ActionState, formData: Form
 
   revalidatePath("/supabase-products")
 
-  return {
-    success: true,
-    message: "商品を追加しました",
-  }
+  redirect("/supabase-products")
 }
