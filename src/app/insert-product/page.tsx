@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react"
 import { createProduct } from "@/lib/products"
 import { createProductAction } from "./actions"
+import { SubmitButton } from "./SubmitButton"
 
 export default function InsertProductPage() {
   const [name, setName] = useState("")
@@ -84,12 +85,8 @@ export default function InsertProductPage() {
             className="ml-2 border px-2 py-1"
           />
 
-          <button
-            type="submit"
-            className="border px-4 py-2 ml-2"
-          >
-            商品追加
-          </button>
+          <SubmitButton />
+
         </form>
 
         <p>{state.message}</p>
