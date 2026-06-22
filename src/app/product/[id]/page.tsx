@@ -2,6 +2,19 @@ import Link from "next/link"
 import { Metadata } from "next"
 export const dynamic = "force-dynamic"
 
+async function getProduct(id: string) {
+  const response = await fetch(
+    `http://localhost:3000/api/products/${id}`
+  )
+
+  if (!response.ok) {
+    return null
+  }
+
+  const product = await response.json()
+  return product
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -10,18 +23,14 @@ export async function generateMetadata({
 
   const { id } = await params
 
-  const response = await fetch(
-    `http://localhost:3000/api/products/${id}`
-  )
+  const product = await getProduct(id)
 
-  if (!response.ok) {
+  if (!product) {
     return {
       title: "商品が見つかりません",
       description: "商品が存在しません",
     }
   }
-
-  const product = await response.json()
 
   return {
     title: product.name,
@@ -36,11 +45,9 @@ export default async function ProductPage({
 }) {
   const { id } = await params
 
-  const response = await fetch(
-    `http://localhost:3000/api/products/${id}`
-  )
+  const product = await getProduct(id)
 
-  if (!response.ok) {
+  if (!product) {
     return (
       <main className="p-8">
         <h1 className="text-3xl font-bold">商品が見つかりません</h1>
@@ -48,8 +55,6 @@ export default async function ProductPage({
       </main>
     )
   }
-
-  const product = await response.json()
 
   return (
     <main className="p-8">
