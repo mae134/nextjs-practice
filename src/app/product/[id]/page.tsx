@@ -1,5 +1,33 @@
 import Link from "next/link"
+import { Metadata } from "next"
 export const dynamic = "force-dynamic"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+
+  const { id } = await params
+
+  const response = await fetch(
+    `http://localhost:3000/api/products/${id}`
+  )
+
+  if (!response.ok) {
+    return {
+      title: "商品が見つかりません",
+      description: "商品が存在しません",
+    }
+  }
+
+  const product = await response.json()
+
+  return {
+    title: product.name,
+    description: `${product.name}の商品詳細ページ`,
+  }
+}
 
 export default async function ProductPage({
   params,
